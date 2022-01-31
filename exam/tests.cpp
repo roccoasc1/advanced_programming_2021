@@ -125,6 +125,7 @@ SCENARIO("using nodes of a deleted stack") {
   }
 }
 
+/*
 SCENARIO("using iterators"){
   GIVEN("two stacks"){
     stack_pool<int, uint16_t> pool{};
@@ -169,3 +170,4 @@ SCENARIO("using iterators"){
   }
 
 }
+*/
