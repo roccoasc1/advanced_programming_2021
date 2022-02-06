@@ -1,8 +1,10 @@
 #include "stack_pool.hpp"
 #include<iostream>
+#include <cassert>
+#include <algorithm> 
 
 int main(){
-
+    {
     stack_pool<int, std::size_t> pool{};
     auto l = pool.new_stack();
     
@@ -40,6 +42,41 @@ int main(){
     l2 = pool1.push(21,l2); // l2 == std::size_t(2)
     std::cout << "l2 == std::size_t(2)\t" << (l2 == std::size_t(2)) << std::endl;
     pool1.print_pool();
+    }
+    {
+    stack_pool<int> pool{22};
+    auto l1 = pool.new_stack();
+    // credits: pi as random number generator :)
+    l1 = pool.push(3, l1);
+    l1 = pool.push(1, l1);
+    l1 = pool.push(4, l1);
+    l1 = pool.push(1, l1);
+    l1 = pool.push(5, l1);
+    l1 = pool.push(9, l1);
+    l1 = pool.push(2, l1);
+    l1 = pool.push(6, l1);
+    l1 = pool.push(5, l1);
+    l1 = pool.push(3, l1);
+    l1 = pool.push(5, l1);
 
+    auto l2 = pool.new_stack();
+    l2 = pool.push(8, l2);
+    l2 = pool.push(9, l2);
+    l2 = pool.push(7, l2);
+    l2 = pool.push(9, l2);
+    l2 = pool.push(3, l2);
+    l2 = pool.push(1, l2);
+    l2 = pool.push(1, l2);
+    l2 = pool.push(5, l2);
+    l2 = pool.push(9, l2);
+    l2 = pool.push(9, l2);
+    l2 = pool.push(7, l2);
+
+    auto M = std::max_element(pool.begin(l1), pool.end(l1));
+    assert(*M == 9); 
+
+    auto m = std::min_element(pool.begin(l2), pool.end(l2));
+    assert(*m == 1); 
+    }
     return 0; 
 }
