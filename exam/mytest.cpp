@@ -3,6 +3,9 @@
 #include <cassert>
 #include <algorithm> 
 
+template <typename T>
+void f(T x);
+
 int main(){
     {
     stack_pool<int, std::size_t> pool{};
@@ -73,10 +76,11 @@ int main(){
     l2 = pool.push(7, l2);
 
     auto M = std::max_element(pool.begin(l1), pool.end(l1));
-    assert(*M == 9); 
+    std::cout << *M << " == 9?: "<< (*M==9) << "\n"; 
 
     auto m = std::min_element(pool.begin(l2), pool.end(l2));
-    assert(*m == 1); 
+    std::cout << *m << " ==1? " << (*m == 1) << std::endl;
+
     }
     return 0; 
 }

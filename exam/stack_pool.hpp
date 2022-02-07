@@ -82,7 +82,7 @@ class stack_pool{
 	struct node_t{
     	T value;
     	N next;
-
+ 
         //explicit node_t(const T& x): value{x} {}
         //node_t(const T& x, N y): value{x}, next{y}{}        
         //explicit node_t(T&& x): value{std::move(x)} {}
@@ -102,8 +102,8 @@ class stack_pool{
     node_t& node(stack_type x) noexcept { return pool[x-1]; }
     const node_t& node(stack_type x) const noexcept { return pool[x-1]; }
 
-    //node_t* next_node (node_t* prev) { return &pool[ prev->next -1 ];}
-    
+    node_t* next_node (node_t* prev) { return &pool[ prev->next -1 ];}
+        std::cout << current->value << " " << current->next<< std::endl;    
     template<typename V>
     stack_type _push(V&& val, stack_type head){
         if (!empty(free_nodes)){
@@ -122,13 +122,41 @@ class stack_pool{
     explicit stack_pool(size_type n) :pool{} { reserve(n); }// reserve n nodes in the pool
 
     template <typename O>
-    class _iterator;
+    class _iterator{
+        stack_type current;
+        public:
+        using value_type = O;
+        using reference = value_type&;
+        using pointer = value_type*;
+        using difference_type = stack_type;
+        using iterator_category = std::forward_iterator_tag;
+         
+        explicit _iterator(stack_type x): current{x} {}
+        
+        reference operator*() const { return value(current); }
+        
+        pointer operator->(){ return &**this; }
+    
+        _iterator& operator++(){
+            current = next(current);
+            return *this;
+        }
+        
+        _iterator& operator++(int){
+            auto tmp = *this;
+            ++(*this);
+            return tmp;   
+        }
+     
+        friend bool operator==(const _iterator& x, const _iterator& y){ return x.current == y.current; }
+        friend bool operator!=(const _iterator& x, const _iterator& y){ return !(x==y); }
+    };        
 
     using iterator = _iterator<T>;
     using const_iterator = _iterator<const T>;
 
-    iterator begin(stack_type x) { return iterator{&node(x)}; }
-    iterator end(stack_type ) { return iterator{&node(end())}; } // this is not a typo
+    iterator begin(stack_type x) { return iterator{x}; }
+    iterator end(stack_type ) { return iterator{end()}; } // this is not a typo
 
     //const_iterator begin(stack_type x) const { return const_iterator{node(x)}; }
     //const_iterator end(stack_type ) const{ return const_iterator{node(end())}; }
@@ -203,9 +231,56 @@ class stack_pool{
     void print_pool() const noexcept {
         std::cout << "value\tnext\n";
         for (const auto x : pool)
-        std::cout << x.value << "\t" << x.next << std::endl;
+            std::cout << x.value << "\t" << x.next << std::endl;
+    }
+    
+    friend node_t& operator++(node_t& x){
+        return node(x.next);
     }
 };
+
+/*
+template <typename T, typename N>
+template <typename O>
+class stack_pool<T,N>::_iterator{
+    using index = typename stack_pool<T,N>::stack_type;
+    index current;
+    public:
+    using value_type = O;
+    using reference = value_type&;
+    using pointer = value_type*;
+    using difference_type = index;
+    using iterator_category = std::forward_iterator_tag;
+    
+    explicit _iterator(index x): current{x} {}
+    
+    reference operator*() const {    
+        return value(current);
+     }
+    
+    pointer operator->(){ return &**this; }
+
+    _iterator& operator++(){
+        current = next(current);
+        return *this;
+    }
+    
+    _iterator& operator++(int){
+        auto tmp = *this;
+        ++(*this);
+        return tmp;   
+    }
+
+    friend bool operator==(const _iterator& x, const _iterator& y){
+        return x.current == y.current;
+    }
+
+    friend bool operator!=(const _iterator& x, const _iterator& y){
+        return !(x==y);
+    }
+};        
+
+
 
 template <typename T, typename N>
 template <typename O>
@@ -226,7 +301,7 @@ class stack_pool<T,N>::_iterator{
     pointer operator->(){ return &**this; }
 
     _iterator& operator++(){
-        current = &node(current->next);
+        current = &*current++;
         return *this;
     }
     
@@ -244,5 +319,5 @@ class stack_pool<T,N>::_iterator{
         return !(x==y);
     }
 };        
-
+*/
 
