@@ -37,6 +37,6 @@ clean:
 
 tests.x : tests_main.o tests.o
 
-tests.o: tests.cpp catch.hpp stack_pool.hpp
+tests.o: tests.cpp catch.hpp stack_pool.hpp iterator.hpp
 
 format : stack_pool.hpp
