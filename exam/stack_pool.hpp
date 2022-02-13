@@ -1,11 +1,8 @@
 /**
  * Implement a pool of blazingly fast stacks
  *
- * authors: Rocco Ascone, Simone Pozzi
+ * Authors: Rocco Ascone, Simone Pozzi
  */
-
-// DUBBI:
-// 2)scrivere qualcosa sui (move copy) ctors di node?
 
 #ifndef __STACK_POOL__
 #define __STACK_POOL__
