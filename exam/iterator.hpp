@@ -4,11 +4,11 @@
 template <typename T, typename N>
 template <typename O>
 class stack_pool<T, N>::_iterator {
-	/**
-		* Implement an iterator class for our stack_pool.
-		* Templates T,N are the templates of the pool.
-		* Template O refers to const-ness.
-		*/
+  /**
+   * Implement an iterator class for our stack_pool.
+   * Templates T,N are the templates of the pool.
+   * Template O refers to const-ness.
+   */
   stack_type current;
   stack_pool<T, N>* sp_ptr;
 
@@ -39,9 +39,11 @@ class stack_pool<T, N>::_iterator {
   friend bool operator==(const _iterator& x, const _iterator& y) {
     return (x.current == y.current) && (x.sp_ptr == y.sp_ptr);
   }
+
   friend bool operator!=(const _iterator& x, const _iterator& y) {
     return !(x == y);
   }
+
 };
 
 #endif
